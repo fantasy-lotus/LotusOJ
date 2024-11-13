@@ -3,13 +3,14 @@ package com.lotus.LOJ.model.dto.submit;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class JudgeInfo implements Serializable {
     /**
      * 判题结果
      */
-    private String result;
+    private List<String> output;
 
     /**
      * 运行时间

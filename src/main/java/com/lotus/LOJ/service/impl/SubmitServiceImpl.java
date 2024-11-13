@@ -38,8 +38,8 @@ public class SubmitServiceImpl extends ServiceImpl<SubmitMapper, Submit>
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
         String language = submitRequest.getLanguage();
-        if(!"c++".equals(language)){
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"目前只支持c++语言");
+        if(!"java".equals(language)){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"目前只支持java语言");
         }
         if(questionService.getById(submitRequest.getQuestionId()) == null){
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"题目不存在");
