@@ -5,10 +5,12 @@ spring:
   # 默认 dev 环境
   profiles:
     active: dev
-  # 支持 swagger3
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+  #// 代码
+private String code;
+// 语言
+private String language;
+// 输入
+private String input;r
   # session 配置
   session:
 #     todo 取消注释开启分布式 session（须先配置 Redis）
@@ -38,10 +40,40 @@ spring:
 #    password: 123456
   # 文件上传
   servlet:
-    multipart:*
+    multipart:
       # 大小限制
       max-file-size: 10MB
-server:
+server:// 代码
+private String code;
+// 语言
+private String language;
+// 输入
+private String input;
+// 代码
+private String code;
+// 语言
+private String language;
+// 输入
+private String input;
+// 代码
+private String code;
+// 语言
+private String language;
+// 输入
+private String input;
+// 代码
+private String code;
+// 语言
+private String language;
+// 输入
+private String input;
+// 代码
+private String code;
+// 语言
+private String language;
+// 输入
+private String input;
+
   address: 0.0.0.0
   port: 8101
   servlet:
