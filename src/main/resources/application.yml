@@ -5,12 +5,6 @@ spring:
   # 默认 dev 环境
   profiles:
     active: dev
-  #// 代码
-private String code;
-// 语言
-private String language;
-// 输入
-private String input;r
   # session 配置
   session:
 #     todo 取消注释开启分布式 session（须先配置 Redis）
@@ -45,7 +39,7 @@ private String input;r
       max-file-size: 10MB
 server:
   address: 0.0.0.0
-  port: 8101
+  port: 8721
   servlet:
     context-path: /api
     # cookie 30 天过期

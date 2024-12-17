@@ -10,7 +10,7 @@ public class JudgeInfo implements Serializable {
     /**
      * 判题结果
      */
-    private List<String> output;
+    private String result;
 
     /**
      * 运行时间
