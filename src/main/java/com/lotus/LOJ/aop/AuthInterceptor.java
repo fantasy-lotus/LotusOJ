@@ -6,8 +6,10 @@ import com.lotus.LOJ.exception.BusinessException;
 import com.lotus.LOJ.model.entity.User;
 import com.lotus.LOJ.model.enums.UserRoleEnum;
 import com.lotus.LOJ.service.UserService;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,10 +19,10 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Objects;
+
 /**
  * 权限校验 AOP
- *
-
  */
 @Aspect
 @Component
@@ -39,6 +41,7 @@ public class AuthInterceptor {
     @Around("@annotation(authCheck)")
     public Object doInterceptor(ProceedingJoinPoint joinPoint, AuthCheck authCheck) throws Throwable {
         String mustRole = authCheck.mustRole();
+        // 获取当前连接
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
         // 当前登录用户
@@ -56,7 +59,7 @@ public class AuthInterceptor {
             }
             // 必须有管理员权限
             if (UserRoleEnum.ADMIN.equals(mustUserRoleEnum)) {
-                if (!mustRole.equals(userRole)) {
+                if (!Objects.equals(mustUserRoleEnum.getText(), userRole)) {
                     throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
                 }
             }

@@ -12,15 +12,15 @@ import org.apache.commons.lang3.ObjectUtils;
  */
 public enum UserRoleEnum {
 
-    USER("用户", "0"),
-    ADMIN("管理员", "1"),
-    BAN("被封号", "-1");
+    USER(0, "user"),
+    ADMIN(1, "admin"),
+    BAN(-1, "ban");
 
-    private final String text;
+    private final Integer text;
 
     private final String value;
 
-    UserRoleEnum(String text, String value) {
+    UserRoleEnum(Integer text, String value) {
         this.text = text;
         this.value = value;
     }
@@ -56,7 +56,7 @@ public enum UserRoleEnum {
         return value;
     }
 
-    public String getText() {
+    public Integer getText() {
         return text;
     }
 }
