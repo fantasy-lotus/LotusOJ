@@ -11,8 +11,8 @@
             <result property="info" column="info" jdbcType="VARCHAR"/>
             <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="judgeConfig" column="judgeConfig" jdbcType="VARCHAR"/>
-            <result property="questionId" column="questionId" jdbcType="INTEGER"/>
-            <result property="userId" column="userId" jdbcType="INTEGER"/>
+            <result property="questionId" column="questionId" jdbcType="BIGINT"/>
+            <result property="userId" column="userId" jdbcType="BIGINT"/>
             <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>

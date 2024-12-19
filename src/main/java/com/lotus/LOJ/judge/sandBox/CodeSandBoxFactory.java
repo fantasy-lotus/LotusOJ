@@ -5,7 +5,7 @@ public class CodeSandBoxFactory {
 
     public static CodeSandBox getCodeSandBox(String type) {
         switch (type) {
-            case "default":
+            case "default"://java
                 return new DefaultCodeSandBox();
             default:
                 return null;

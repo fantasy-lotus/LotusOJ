@@ -33,6 +33,11 @@ public class Submit implements Serializable {
 
     /**
      * 判题信息 - json
+     * {
+     *     result: String, (AC,WA,TLE,MLE,RE)
+     *     time: String,
+     *     memory: String
+     * }
      */
     private String info;
 

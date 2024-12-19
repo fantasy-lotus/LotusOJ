@@ -23,9 +23,11 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+/**
+ * 判题服务实现类
+ */
 @Service
 @Slf4j
 public class JudgeServiceImpl implements JudgeService{
@@ -38,13 +40,12 @@ public class JudgeServiceImpl implements JudgeService{
     private QuestionService questionService;
 
     @Autowired
-    private CodeSandBox codeSandBox;
-
-    @Autowired
     private JudgeMannger judgeMannger;
 
+    //配置文件获取代码沙箱类型
     @Value("${codeSandBox.type}")
     private String type;
+
     @Override
     public JudgeInfo doJudge(long submitId) {
         if(submitId<=0)
@@ -58,6 +59,12 @@ public class JudgeServiceImpl implements JudgeService{
         if(status != 0){
             throw new BusinessException(ErrorCode.OPERATION_ERROR,"该提交已判题");
         }
+
+        //更新提交记录状态为判题中
+        submit.setStatus(1);
+        boolean b = submitService.updateById(submit);
+        if(!b)
+            throw new BusinessException(ErrorCode.OPERATION_ERROR,"更新提交记录失败");
         Long questionId = submit.getQuestionId();
         Question question = questionService.getById(questionId);
         String judgeCase = question.getJudgeCase();
@@ -72,24 +79,36 @@ public class JudgeServiceImpl implements JudgeService{
         executeCodeRequest.setCode(code);
         executeCodeRequest.setLanguage(language);
         executeCodeRequest.setInput(input);
+
+        //工厂模式获取代码沙箱
         CodeSandBox codeSandBox = CodeSandBoxFactory.getCodeSandBox(type);
+        if(codeSandBox == null){
+            throw new BusinessException(ErrorCode.OPERATION_ERROR,"请检查判题配置");
+        }
+
+        //代码沙箱执行代码
         ExecuteCodeResponse executeCodeResponse = codeSandBox.executeCode(executeCodeRequest);
         if(executeCodeResponse == null){
-            throw new BusinessException(ErrorCode.OPERATION_ERROR,"判题失败");
+            throw new BusinessException(ErrorCode.OPERATION_ERROR,"代码运行失败");
         }
         JudgeContext judgeContext = JudgeContext.builder()
                         .judgeConfig(JSONUtil.toBean(judgeConfig, JudgeConfig.class))
-                        .output(output)
+                        .output(executeCodeResponse.getOutput())
                         .target(output)
                         .time(executeCodeResponse.getTime())
                         .memory(executeCodeResponse.getMemory())
                         .submit(submit)
                         .build();
+
+        //根据运行结果判题
         JudgeInfo judgeInfo = judgeMannger.doJudge(judgeContext);
-        submit.setStatus(1);
+        if(judgeInfo == null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"不支持的答题语言");
+        }
+        submit.setStatus(judgeInfo.getResult().equals("AC")?2:-1);
         submit.setInfo(JSONUtil.toJsonStr(judgeInfo));
-        boolean b = submitService.updateById(submit);
-        if(!b)
+        boolean res = submitService.updateById(submit);
+        if(!res)
             throw new BusinessException(ErrorCode.OPERATION_ERROR,"更新提交记录失败");
         return judgeInfo;
     }

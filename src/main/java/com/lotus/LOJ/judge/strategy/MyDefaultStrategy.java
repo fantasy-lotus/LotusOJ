@@ -2,12 +2,14 @@ package com.lotus.LOJ.judge.strategy;
 
 import com.lotus.LOJ.model.dto.question.JudgeConfig;
 import com.lotus.LOJ.model.dto.submit.JudgeInfo;
-import com.lotus.LOJ.model.entity.Submit;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 默认的判题策略
+ * 获取由代码执行器返回的结果，与目标结果进行比对, 进行判题逻辑
+ */
 @Slf4j
 public class MyDefaultStrategy {
     public JudgeInfo doInnerJudge(JudgeContext judgeContext) {
@@ -20,6 +22,10 @@ public class MyDefaultStrategy {
         JudgeInfo judgeInfo = new JudgeInfo();
         judgeInfo.setTime(time);
         judgeInfo.setMemory(memory);
+        if(output==null){
+            judgeInfo.setResult("RE");
+            return judgeInfo;
+        }
         if(target.size()!=output.size()){
             judgeInfo.setResult("WA");
             return judgeInfo;
