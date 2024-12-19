@@ -75,10 +75,11 @@ public class JudgeServiceImpl implements JudgeService{
             output.add(aCase.getOutput());
         }
         String judgeConfig = question.getJudgeConfig();
-        ExecuteCodeRequest executeCodeRequest = new ExecuteCodeRequest();
-        executeCodeRequest.setCode(code);
-        executeCodeRequest.setLanguage(language);
-        executeCodeRequest.setInput(input);
+        ExecuteCodeRequest executeCodeRequest = ExecuteCodeRequest.builder()
+                        .code(code)
+                        .language(language)
+                        .input(input)
+                        .build();
 
         //工厂模式获取代码沙箱
         CodeSandBox codeSandBox = CodeSandBoxFactory.getCodeSandBox(type);

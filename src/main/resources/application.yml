@@ -106,3 +106,7 @@ knife4j:
 
 codeSandBox:
   type: default
+
+logging:
+  level:
+    root: info

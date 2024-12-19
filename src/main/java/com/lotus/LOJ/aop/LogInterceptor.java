@@ -52,6 +52,24 @@ public class LogInterceptor {
         return result;
     }
 
-
+    @Around("execution(* com.lotus.LOJ.judge.sandBox.CodeSandBox.executeCode(..))")
+    public Object doSandBoxLog(ProceedingJoinPoint point) throws Throwable {
+        // 计时
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        // 获取请求参数
+        Object[] args = point.getArgs();
+        String requestId = UUID.randomUUID().toString();
+        String reqParam = "[" + StringUtils.join(args, ", ") + "]";
+        // 输出请求日志
+        log.info("codeSandBox start，id: {}, input: {}", requestId, reqParam);
+        // 执行原方法
+        Object result = point.proceed();
+        // 输出响应日志
+        stopWatch.stop();
+        long totalTimeMillis = stopWatch.getTotalTimeMillis();
+        log.info("codeSandBox end, cost: {}ms", totalTimeMillis);
+        return result;
+    }
 }
 
