@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 提交表
  * @TableName submit
@@ -29,6 +31,7 @@ public class Submit implements Serializable {
     /**
      * 提交代码
      */
+    @NotBlank(message = "代码不能为空")
     private String code;
 
     /**

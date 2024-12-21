@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 /**
  * 题目
  * @TableName question
@@ -24,11 +27,14 @@ public class Question implements Serializable {
     /**
      * 标题
      */
+    @NotBlank(message = "标题不能为空")
+    @Size(max = 16,message = "标题长度应小于16")
     private String title;
 
     /**
      * 题干
      */
+    @NotBlank(message = "题干不能为空")
     private String content;
 
     /**
@@ -39,11 +45,13 @@ public class Question implements Serializable {
     /**
      * 测试点 - json数组
      */
+    @NotBlank(message = "测试点不能为空")
     private String judgeCase;
 
     /**
      * 判题限制 - json对象
      */
+    @NotBlank(message = "判题限制不能为空")
     private String judgeConfig;
 
     /**

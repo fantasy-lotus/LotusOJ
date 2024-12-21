@@ -8,6 +8,12 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+
 /**
  * 用户
  * @TableName user
@@ -24,21 +30,29 @@ public class User implements Serializable {
     /**
      * 账号
      */
+    @NotBlank(message = "账号不能为空")
+    @Size(min = 11,max = 11,message = "请输入正确的电话号码格式")
+    @Pattern(regexp = "^[0-9]+$", message = "请输入正确的电话号码格式")
     private String tel;
 
     /**
      * 密码
      */
+    @NotBlank(message = "密码不能为空")
+    @Size(min = 6,max = 16,message = "密码长度应在6-16位之间")
     private String pwd;
 
     /**
      * 用户昵称
      */
+    @NotBlank(message = "昵称不能为空")
+    @Size(min = 2,max = 16,message = "昵称长度应在1-16位之间")
     private String name;
 
     /**
      * 用户简介
      */
+    @Size(max = 255,message = "简介长度应在0-255位之间")
     private String profile;
 
     /**

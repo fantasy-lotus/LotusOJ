@@ -10,9 +10,9 @@ use oj_db;
 create table if not exists user
 (
     `id`       bigint comment 'id' primary key,
-    tel        varchar(16)                        not null comment '账号',
+    tel        varchar(11)                        not null comment '账号',
     pwd        varchar(64)                        not null comment '密码',
-    name       varchar(64)                        null comment '用户昵称',
+    name       varchar(16)                        null comment '用户昵称',
     profile    varchar(512)                       null comment '用户简介',
     role       tinyint  default 0                 not null comment '用户角色：user - 0/admin - 1/ban - -1',
     createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
