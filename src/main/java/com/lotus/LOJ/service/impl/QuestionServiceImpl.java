@@ -2,6 +2,7 @@ package com.lotus.LOJ.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
+import com.lotus.LOJ.annotation.AuthCheck;
 import com.lotus.LOJ.common.ErrorCode;
 import com.lotus.LOJ.exception.BusinessException;
 import com.lotus.LOJ.exception.ThrowUtils;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author 31964
@@ -24,8 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         implements QuestionService {
-    private final static Gson GSON = new Gson();
-
     @Resource
     private UserService userService;
 
@@ -51,12 +52,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         }
     }
 
+    @AuthCheck(mustRole = "USER")
     @Override
-    public QuestionVO getQuestionVO(Question question, HttpServletRequest request) {
-        // 1. 关联查询用户信息
-        if (request == null || userService.getLoginUser(request) == null) {
-            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
-        }
+    public QuestionVO getQuestionVO(Question question) {
         QuestionVO questionVO = QuestionVO.objToVo(question);
         return questionVO;
     }

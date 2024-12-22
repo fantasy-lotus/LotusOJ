@@ -132,7 +132,7 @@ public class QuestionController {
         if (question == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
-        return ResultUtils.success(questionService.getQuestionVO(question, request));
+        return ResultUtils.success(questionService.getQuestionVO(question));
     }
 
 

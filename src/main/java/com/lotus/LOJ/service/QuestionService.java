@@ -1,10 +1,12 @@
 package com.lotus.LOJ.service;
 
+import com.lotus.LOJ.annotation.AuthCheck;
 import com.lotus.LOJ.model.entity.Question;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lotus.LOJ.model.vo.QuestionVO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
 * @author 31964
@@ -15,5 +17,6 @@ public interface QuestionService extends IService<Question> {
 
     void validQuestion(Question question, boolean add);
 
-    QuestionVO getQuestionVO(Question question, HttpServletRequest request);
+    @AuthCheck(mustRole = "USER")
+    QuestionVO getQuestionVO(Question question);
 }
