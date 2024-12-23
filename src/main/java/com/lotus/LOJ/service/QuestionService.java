@@ -1,6 +1,8 @@
 package com.lotus.LOJ.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lotus.LOJ.annotation.AuthCheck;
+import com.lotus.LOJ.model.dto.question.QuestionQueryRequest;
 import com.lotus.LOJ.model.entity.Question;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lotus.LOJ.model.vo.QuestionVO;
@@ -19,4 +21,7 @@ public interface QuestionService extends IService<Question> {
 
     @AuthCheck(mustRole = "USER")
     QuestionVO getQuestionVO(Question question);
+
+    @AuthCheck(mustRole = "USER")
+    QueryWrapper<Question> buildQueryWrapper(QuestionQueryRequest request);
 }

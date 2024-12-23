@@ -22,44 +22,14 @@ public class QuestionQueryRequest extends PageRequest implements Serializable {
     private Long id;
 
     /**
-     * id
-     */
-    private Long notId;
-
-    /**
      * 搜索词
      */
     private String searchText;
 
     /**
-     * 标题
+     * 难度 0 - noob 1 - normal 2 - hard -1 - undefined
      */
-    private String title;
-
-    /**
-     * 内容
-     */
-    private String content;
-
-    /**
-     * 标签列表
-     */
-    private List<String> tags;
-
-    /**
-     * 至少有一个标签
-     */
-    private List<String> orTags;
-
-    /**
-     * 创建用户 id
-     */
-    private Long userId;
-
-    /**
-     * 收藏用户 id
-     */
-    private Long favourUserId;
+    private Integer level;
 
     private static final long serialVersionUID = 1L;
 }

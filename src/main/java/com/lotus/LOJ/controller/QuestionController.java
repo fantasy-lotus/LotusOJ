@@ -1,6 +1,7 @@
 package com.lotus.LOJ.controller;
 
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
 import com.lotus.LOJ.annotation.AuthCheck;
@@ -18,6 +19,7 @@ import com.lotus.LOJ.model.vo.QuestionVO;
 import com.lotus.LOJ.service.QuestionService;
 import com.lotus.LOJ.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -60,7 +63,7 @@ public class QuestionController {
         question.setJudgeConfig(JSONUtil.toJsonStr(questionAddRequest.getJudgeConfig()));
         questionService.validQuestion(question, true);
         User loginUser = userService.getLoginUser(request);
-        if(loginUser == null){
+        if (loginUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
         log.info(String.valueOf(question));
@@ -124,7 +127,7 @@ public class QuestionController {
      * @return
      */
     @GetMapping("/get/vo")
-    public BaseResponse<QuestionVO> getQuestionVOById(long id, HttpServletRequest request) {
+    public BaseResponse<QuestionVO> getQuestionVOById(long id) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -135,6 +138,23 @@ public class QuestionController {
         return ResultUtils.success(questionService.getQuestionVO(question));
     }
 
+    /**
+     * 获取题目列表
+     * @param questionQueryRequest
+     */
+    @GetMapping("/get/list")
+    public BaseResponse<List<QuestionVO>> getQuestionVOList(QuestionQueryRequest questionQueryRequest) {
+        if (questionQueryRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        List<Question> res = questionService.list(questionService.buildQueryWrapper(questionQueryRequest));
+        if (res == null || res.isEmpty()) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"未找到题目");
+        }
+        return ResultUtils.success(res.stream()
+                .map(question -> questionService.getQuestionVO(question))
+                .collect(Collectors.toList()));
+    }
 
     /**
      * 编辑（用户）

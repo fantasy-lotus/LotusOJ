@@ -1,11 +1,13 @@
 package com.lotus.LOJ.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
 import com.lotus.LOJ.annotation.AuthCheck;
 import com.lotus.LOJ.common.ErrorCode;
 import com.lotus.LOJ.exception.BusinessException;
 import com.lotus.LOJ.exception.ThrowUtils;
+import com.lotus.LOJ.model.dto.question.QuestionQueryRequest;
 import com.lotus.LOJ.model.entity.*;
 import com.lotus.LOJ.model.vo.QuestionVO;
 import com.lotus.LOJ.service.QuestionService;
@@ -57,6 +59,23 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
     public QuestionVO getQuestionVO(Question question) {
         QuestionVO questionVO = QuestionVO.objToVo(question);
         return questionVO;
+    }
+
+    @Override
+    public QueryWrapper<Question> buildQueryWrapper(QuestionQueryRequest request) {
+        QueryWrapper<Question> queryWrapper = new QueryWrapper<>();
+        Integer level = request.getLevel();
+        if (level != null) {
+            queryWrapper.eq("level", level);
+        }
+        if (request.getId() != null) {
+            queryWrapper.eq("id", request.getId());
+        }
+        String searchText = request.getSearchText();
+        if (StringUtils.isNotBlank(searchText)) {
+            queryWrapper.like("title", searchText);
+        }
+        return queryWrapper;
     }
 
 }
