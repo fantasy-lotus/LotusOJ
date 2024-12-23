@@ -143,6 +143,7 @@ public class QuestionController {
      * @param questionQueryRequest
      */
     @GetMapping("/get/list")
+    @AuthCheck(mustRole = UserConstant.DEFAULT_ROLE)
     public BaseResponse<List<QuestionVO>> getQuestionVOList(QuestionQueryRequest questionQueryRequest) {
         if (questionQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -151,9 +152,12 @@ public class QuestionController {
         if (res == null || res.isEmpty()) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"未找到题目");
         }
-        return ResultUtils.success(res.stream()
-                .map(question -> questionService.getQuestionVO(question))
-                .collect(Collectors.toList()));
+        long current = questionQueryRequest.getCurrent();
+        long pageSize = questionQueryRequest.getPageSize();
+        ThrowUtils.throwIf(pageSize>20,ErrorCode.PARAMS_ERROR);
+        Page<QuestionVO> pageVO = new Page<>(current,pageSize);
+        pageVO.setRecords(res.stream().map(questionService::getQuestionVO).collect(Collectors.toList()));
+        return ResultUtils.success(pageVO.getRecords());
     }
 
     /**

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
 import com.lotus.LOJ.annotation.AuthCheck;
 import com.lotus.LOJ.common.ErrorCode;
+import com.lotus.LOJ.constant.UserConstant;
 import com.lotus.LOJ.exception.BusinessException;
 import com.lotus.LOJ.exception.ThrowUtils;
 import com.lotus.LOJ.model.dto.question.QuestionQueryRequest;
@@ -54,11 +55,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         }
     }
 
-    @AuthCheck(mustRole = "USER")
     @Override
     public QuestionVO getQuestionVO(Question question) {
-        QuestionVO questionVO = QuestionVO.objToVo(question);
-        return questionVO;
+        return QuestionVO.objToVo(question);
     }
 
     @Override
