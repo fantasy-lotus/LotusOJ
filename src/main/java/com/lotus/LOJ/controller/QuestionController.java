@@ -41,7 +41,6 @@ public class QuestionController {
     @Resource
     private UserService userService;
 
-    private final static Gson GSON = new Gson();
 
     // region 增删改查
 
